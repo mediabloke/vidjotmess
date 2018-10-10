@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 //user login route
 
 router.get('/login', (req, res) => {
-    res.send('login');
+    res.render('users/login');
 });
 
 //user register route
