@@ -50,7 +50,7 @@ app.use(methodOverride('_method'));
 //session middleware
 
 app.use(session({
-    secret: 'secres',
+    secret: 'secret',
     resave: true,
     saveUninitialized: true
   }));

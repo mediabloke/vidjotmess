@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const router = express.Router();
 
 // Load Idea Model
-require('../views/models/Idea');
+require('../models/Idea');
 const Idea = mongoose.model('ideas');
 
 // Idea Index Page
