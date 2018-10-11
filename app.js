@@ -6,7 +6,6 @@ const flash = require('connect-flash');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
 const mongoose = require('mongoose');
 
 const app = express();
@@ -16,6 +15,12 @@ const app = express();
 const ideas = require('./routes/ideas');
 const users = require('./routes/users');
 
+//Passport config
+require('./config/passport')(passport);
+
+//DB config
+
+const db = require('./config/database');
 
 //get rid of mongooses error
 
@@ -23,7 +28,7 @@ mongoose.Promise = global.Promise;
 
 //connect to mongoose
 
-mongoose.connect('mongodb://localhost/vidjot-dev', {
+mongoose.connect(db.mongoURI, {
     useNewUrlParser: true
 })
     .then( () => {console.log('mongoDb connected')})
@@ -55,6 +60,11 @@ app.use(session({
     saveUninitialized: true
   }));
 
+//passport middleware
+
+app.use(passport.initialize());
+app.use(passport.session());
+
   app.use(flash());
 
   //global variables
@@ -63,6 +73,7 @@ app.use(session({
       res.locals.success_msg = req.flash('success_msg');
       res.locals.error_msg = req.flash('error_msg');
       res.locals.error = req.flash('error');
+      res.locals.user = req.user || null;
       next();
   });
 
@@ -89,7 +100,7 @@ app.get('/about', (req, res) => {
 app.use('/ideas', ideas);
 app.use('/users', users);
 
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
     console.log(`listening on port ${port}`)
