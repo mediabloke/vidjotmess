@@ -23,17 +23,15 @@ router.get('/register', (req, res) => {
 });
 
 // Login Form POST
-
 router.post('/login', (req, res, next) => {
     passport.authenticate('local', {
-        successRedirect: '/ideas',
+        successRedirect: '/skills',
         failureRedirect: '/users/login',
         failureFlash: true
     })(req, res, next);
 });
 
 //Register form POST
-
 router.post('/register', (req, res) => {
     let errors = [];
     if (req.body.password !== req.body.password2) {
@@ -55,7 +53,7 @@ router.post('/register', (req, res) => {
         User.findOne({email: req.body.email})
             .then(user => {
                 if (user) {
-                    req.flash('error_msg', 'Email has already been registered');
+                    req.flash('error_msg', 'Email Has Already Been Registered');
                     res.redirect('/users/register');
                 }
                 else {
@@ -73,8 +71,8 @@ router.post('/register', (req, res) => {
                             newUser.password = hash;
                             newUser.save()
                                 .then(user => {
-                                    if(user) {
-                                        req.flash('success_msg', 'You are now registered and can log in');
+                                    if (user) {
+                                        req.flash('success_msg', 'You Are Now Registered And Can Log In');
                                         res.redirect('/users/login');
                                     }
                                 })
@@ -94,7 +92,7 @@ router.post('/register', (req, res) => {
 
 router.get('/logout', (req, res) => {
     req.logout();
-    req.flash('success_msg', 'You are logged out');
+    req.flash('success_msg', 'You Are Logged Out');
     res.redirect('/users/login');
 });
 

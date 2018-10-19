@@ -12,75 +12,69 @@ const app = express();
 
 //load routes
 
-const ideas = require('./routes/ideas');
+const skills = require('./routes/skills');
 const users = require('./routes/users');
 
 //Passport config
 require('./config/passport')(passport);
 
 //DB config
-
 const db = require('./config/database');
 
 //get rid of mongooses error
-
 mongoose.Promise = global.Promise;
 
 //connect to mongoose
-
 mongoose.connect(db.mongoURI, {
     useNewUrlParser: true
 })
-    .then( () => {console.log('mongoDb connected')})
+    .then(() => {
+        console.log('mongoDb connected')
+    })
     .catch(err => console.log(err));
 
 //handlebars middleware
-
 app.engine('handlebars', exphbs({
     defaultLayout: 'main'
 }));
 app.set('view engine', 'handlebars');
 
 //body parser middleware
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 //static folder
-
 app.use(express.static(path.join(__dirname, 'public')));
 
 //method override middleware
 app.use(methodOverride('_method'));
 
 //session middleware
-
 app.use(session({
     secret: 'secret',
     resave: true,
     saveUninitialized: true
-  }));
+}));
 
 //passport middleware
-
 app.use(passport.initialize());
 app.use(passport.session());
 
-  app.use(flash());
+app.use(flash());
 
-  //global variables
+//global variables
 
-  app.use((req, res, next) => {
-      res.locals.success_msg = req.flash('success_msg');
-      res.locals.error_msg = req.flash('error_msg');
-      res.locals.error = req.flash('error');
-      res.locals.user = req.user || null;
-      next();
-  });
+app.use((req, res, next) => {
+    res.locals.success_msg = req.flash('success_msg');
+    res.locals.error_msg = req.flash('error_msg');
+    res.locals.error = req.flash('error');
+    res.locals.user = req.user || null;
+    next();
+});
 
 //index route
-
 app.get('/', (req, res) => {
-    const theTitle = 'what\'s the poiyyyyynt';
+    const theTitle = 'Keep Track Of Your Coding Skills';
     res.render('index', {
         title: theTitle
     });
@@ -88,16 +82,13 @@ app.get('/', (req, res) => {
 });
 
 //About Page
-
 app.get('/about', (req, res) => {
     res.render('about')
 });
 
 
-
 //use routes
-
-app.use('/ideas', ideas);
+app.use('/skills', skills);
 app.use('/users', users);
 
 const port = process.env.PORT || 5000;

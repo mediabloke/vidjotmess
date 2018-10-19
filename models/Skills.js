@@ -3,12 +3,12 @@ const Schema = mongoose.Schema;
 
 //create scema
 
-const IdeaSchema = new Schema({
-    title:{
+const SkillSchema = new Schema({
+    title: {
         type: String,
         required: true
     },
-    details:{
+    details: {
         type: String,
         required: true
     },
@@ -16,10 +16,10 @@ const IdeaSchema = new Schema({
         type: String,
         required: true
     },
-    date:{
+    date: {
         type: Date,
         default: Date.now
     }
 });
 
-mongoose.model('ideas', IdeaSchema);
+mongoose.model('skills', SkillSchema);

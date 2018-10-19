@@ -3,41 +3,40 @@ const mongoose = require('mongoose');
 const router = express.Router();
 
 //load auth helper
-
 const {ensureAuthenticated} = require('../helpers/auth');
 
-// Load Idea Model
-require('../models/Idea');
-const Idea = mongoose.model('ideas');
+// Load Skills Model
+require('../models/Skills');
+const Skill = mongoose.model('skills');
 
 // Idea Index Page
 router.get('/', ensureAuthenticated, (req, res) => {
-    Idea.find({user: req.user.id})
+    Skill.find({user: req.user.id})
         .sort({date:'desc'})
-        .then(ideas => {
-            res.render('ideas/index', {
-                ideas:ideas
+        .then(skills => {
+            res.render('skills/index', {
+                skills:skills
             });
         });
 });
 
 // Add Idea Form
 router.get('/add', ensureAuthenticated, (req, res) => {
-    res.render('ideas/add');
+    res.render('skills/add');
 });
 
 // Edit Idea Form
 router.get('/edit/:id', ensureAuthenticated, (req, res) => {
-    Idea.findOne({
+    Skill.findOne({
         _id: req.params.id
     })
-        .then(idea => {
-            if (idea.user !== req.user.id) {
+        .then(skill => {
+            if (skill.user !== req.user.id) {
                 req.flash('error_msg', 'Not Authorized');
-                res.redirect('/ideas ');
+                res.redirect('/skills ');
             } else {
-                res.render('ideas/edit', {
-                    idea: idea
+                res.render('skills/edit', {
+                    skill: skill
                 });
             }
         });
@@ -66,39 +65,40 @@ router.post('/', ensureAuthenticated, (req, res) => {
             details: req.body.details,
             user: req.user.id
         };
-        new Idea(newUser)
+        new Skill(newUser)
             .save()
-            .then(idea => {
-                req.flash('success_msg', 'Video idea added');
-                res.redirect('/ideas');
+            .then(skill => {
+                req.flash('success_msg', 'Code Skill Added');
+                res.redirect('/skills');
             })
     }
 });
 
 // Edit Form process
 router.put('/:id', ensureAuthenticated, (req, res) => {
-    Idea.findOne({
+    Skill.findOne({
         _id: req.params.id
     })
-        .then(idea => {
+        .then(skill => {
             // new values
-            idea.title = req.body.title;
-            idea.details = req.body.details;
-
-            idea.save()
-                .then(idea => {
-                    req.flash('success_msg', 'Video idea updated');
-                    res.redirect('/ideas');
+            skill.title = req.body.title;
+            skill.details = req.body.details;
+            skill.save()
+                .then(skill => {
+                    req.flash('success_msg', 'Skill Choice Updated');
+                    res.redirect('/skills');
                 })
         });
 });
 
 // Delete Idea
 router.delete('/:id', ensureAuthenticated, (req, res) => {
-    Idea.deleteOne({_id: req.params.id})
+    Skill.deleteOne({
+        _id: req.params.id
+    })
         .then(() => {
-            req.flash('success_msg', 'Video idea removed');
-            res.redirect('/ideas');
+            req.flash('success_msg', 'Skill Choice Removed');
+            res.redirect('/skills');
         });
 });
 
