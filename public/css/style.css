@@ -1,9 +1,17 @@
-.logo {
+.main-logo {
+    width: 30%;
+    margin: -5em auto;
+}.logo {
     width: 130px;
     margin: auto;
 }
-.half {
+/*.half {
     display: grid;
     grid-gap: 20px;
     grid-template-columns: repeat(2, 1fr);
+}*/
+.half {
+    position: relative;
+    float: left;
+    padding: 1em;
 }
