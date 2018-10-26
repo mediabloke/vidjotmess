@@ -1,5 +1,11 @@
 <div class="jumbotron text-center">
   <h1 class="display-3">{{title}}</h1>
   <p class="lead">What Are You Going To Study Next?</p>
-  <a href="/ideas/add" class="btn btn-dark btn-lg">Add Skill</a>
+    {{#if user}}
+        <a href="/skills/add" class="btn btn-dark btn-lg">Add Skill</a>
+    {{else}}
+        <a href="/users/login" class="btn btn-dark btn-lg">Log In</a>
+        <a href="/users/register" class="btn btn-dark btn-lg">Register</a>
+    {{/if}}
+
 </div>

@@ -33,7 +33,7 @@ router.get('/edit/:id', ensureAuthenticated, (req, res) => {
         .then(skill => {
             if (skill.user !== req.user.id) {
                 req.flash('error_msg', 'Not Authorized');
-                res.redirect('/skills ');
+                res.redirect('/skills');
             } else {
                 res.render('skills/edit', {
                     skill: skill
